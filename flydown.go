@@ -42,6 +42,7 @@ func main() {
 		http.StripPrefix("/static/",
 			http.FileServer(http.Dir("./static")))))
 	http.HandleFunc("/md/", flydown.RenderMdHandleFunc)
+	http.HandleFunc("/search", flydown.SearchHandleFunc)
 	http.HandleFunc("/", flydown.MainHandleFunc)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
