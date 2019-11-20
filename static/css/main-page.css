@@ -1,0 +1,22 @@
+html, body{
+    padding: 0;
+    margin: 0;
+}
+html{
+    height: 100%;
+}
+body{
+    min-height: 100%;
+}
+
+.box{
+    display: flex;
+    flex-direction: row;
+    min-height:  100vw;
+}
+
+iframe{
+    border: none;
+    min-height:  100vw;
+    padding-left: 20px;
+}

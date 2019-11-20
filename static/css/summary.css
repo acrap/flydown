@@ -1,0 +1,26 @@
+
+.summary{
+    padding-top: 20px;
+    padding-right: 20px;
+    min-height:  100vw;
+    flex-basis: content;
+    background-color: beige;
+}
+
+.summary > p {
+    padding-top: 30px;
+}
+
+ul{
+    padding-left: 15pt;
+    font-size: 15pt;
+    list-style-type:none
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    text-decoration: underline;
+}

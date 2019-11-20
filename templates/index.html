@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main Page</title>
+  <meta name="GENERATOR" content="github.com/gomarkdown/markdown markdown processor for Go">
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/css/main-page.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/summary.css">
+</head>
+<body>
+    <div class="box">
+      <div class="summary">
+        {{.Summary}}
+      </div>
+      <iframe id="markdown" style="flex-grow: 30" src="/md/readme.md">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+      <div style="width: 20px"/>
+    </div>
+    <script src="/static/js/summary.js"></script>
+</body>
+</html>
