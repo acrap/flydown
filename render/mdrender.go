@@ -1,13 +1,9 @@
 package flydown
 
 import (
-	"bufio"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -90,62 +86,5 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Cannot get summary", 500)
-	}
-}
-
-func searchStringInFile(filename string, searchStr string) (lines []int, err error) {
-	f, err := os.Open(filename)
-
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	// Splits on newlines by default.
-	scanner := bufio.NewScanner(f)
-
-	line := 1
-	// https://golang.org/pkg/bufio/#Scanner.Scan
-	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), searchStr) {
-			lines = append(lines, line)
-		}
-		line++
-	}
-
-	if err := scanner.Err(); err != nil {
-		// Handle the error
-		log.Printf("error in search handler %v\n", err)
-	}
-	return lines, err
-}
-
-// SearchHandleFunc handler for searching request
-func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
-	var searchStr string
-	type result struct {
-		filename string
-		lines    []int
-	}
-	var results []result
-	r.ParseForm()
-
-	searchStr = r.Form.Get("search_string")
-	err := filepath.Walk(folderToHost, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".md") {
-
-			lines, err := searchStringInFile(path, searchStr)
-			if err == nil && lines != nil {
-				curResult := result{filename: path, lines: nil}
-				curResult.lines = lines
-				results = append(results, curResult)
-			}
-
-		}
-		return nil
-	})
-	fmt.Printf("%v", results)
-	if err != nil {
-		http.Error(w, "Error in search handler", 404)
 	}
 }
