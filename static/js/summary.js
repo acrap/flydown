@@ -14,6 +14,7 @@ searchbar.addEventListener("keyup", function(event) {
    event.preventDefault();
    var md_addr = "/search?search_string=" + searchbar.value;
    iframe.src = md_addr;
+   searchbar.value = "";
   }
 });
 
