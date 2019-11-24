@@ -35,23 +35,18 @@ func searchStringInFile(filename string, searchStr string) (context []string, li
 	// https://golang.org/pkg/bufio/#Scanner.Scan
 	for scanner.Scan() {
 		currentLineStr := scanner.Text()
-		isResultFound := strings.Contains(currentLineStr, searchStr)
+		currentLineStrLow := strings.ToLower(currentLineStr)
+		isResultFound := strings.Contains(currentLineStrLow, searchStr)
 		if isResultFound {
-			isResultInsideLink := false
 			linkEndIndex := 0
 			linkStartIndex := strings.Index(currentLineStr, string("]("))
+			indexFoundResult := strings.Index(currentLineStrLow, searchStr)
 			if linkStartIndex > 0 {
 				linkEndIndex = strings.Index(currentLineStr, string(")"))
-				if strings.Index(currentLineStr, searchStr) > linkStartIndex && strings.Index(currentLineStr, searchStr) < linkEndIndex {
-					isResultInsideLink = true
+				if (indexFoundResult > linkStartIndex) && (indexFoundResult < linkEndIndex) {
 					isResultFound = false
-					fmt.Println(currentLineStr)
 				}
 			}
-			if !isResultInsideLink {
-				currentLineStr = strings.Replace(currentLineStr, searchStr, "**"+searchStr+"**", -1)
-			}
-
 		}
 		if cRingCounter < contextLines {
 			contextRing = append(contextRing, currentLineStr)
