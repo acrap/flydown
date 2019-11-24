@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -85,7 +86,6 @@ func searchStringInFile(filename string, searchStr string) (context []string, li
 
 // SearchHandleFunc handler for searching request
 func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
-	var searchStr string
 	type result struct {
 		filename string
 		lines    []int
@@ -100,8 +100,12 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 	var results []result
 	resultMd := ""
 	r.ParseForm()
+	searchStr := r.URL.Query().Get("search_string")
+	if searchStr == "" {
+		http.Error(w, "Empty search request", 400)
+		return
+	}
 
-	searchStr = r.URL.Query()["search_string"][0]
 	err := filepath.Walk(folderToHost, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".md") {
 
@@ -112,16 +116,20 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 				curResult.context = context
 				results = append(results, curResult)
 			}
-
 		}
 		return nil
 	})
+
 	for _, r := range results {
+		entryNum := 0
 		for i, c := range r.context {
-			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", r.filename, r.lines[i], r.filename)
+			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
+			fixedLink := strings.ReplaceAll(r.filename, folderToHost, "md")
+			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", r.filename, r.lines[i], fixedLink+additionalParams)
 			md := fileAndLineLink + c + "\n" + "\n"
 			mdHTMLBytes := markdown.ToHTML([]byte(md), nil, renderer)
 			resultMd += string(mdHTMLBytes)
+			entryNum++
 		}
 	}
 
