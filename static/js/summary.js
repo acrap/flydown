@@ -1,10 +1,23 @@
 var iframe = document.getElementById("markdown")
 
+function selectChapter(chapterELement){
+  // unselect others
+  const elements = [...document.querySelectorAll("a")];
+  elements.forEach(element=>{
+    element.parentElement.classList.remove("selected")
+  })
+  
+  // select new one
+  chapterELement.parentElement.classList.add("selected")
+}
+
 window.onclick = function (e) {
     if (e.target.localName == 'a') {
         e.preventDefault();
         var md_addr = e.target.getAttribute("href");
         iframe.src = md_addr;
+        // select new one
+        this.selectChapter(e.target)
     }
 }
 
@@ -17,4 +30,5 @@ searchbar.addEventListener("keyup", function(event) {
    searchbar.value = "";
   }
 });
+
 

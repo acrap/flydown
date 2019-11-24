@@ -11,10 +11,21 @@
     padding-top: 30px;
 }
 
+p,li{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 10pt;
+    padding-bottom: 10pt;
+}
+
 ul{
     padding-left: 15pt;
     font-size: 15pt;
     list-style-type:none
+}
+
+.selected{
+    background-color: rgb(144, 148, 147);
 }
 
 a {
