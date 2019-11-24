@@ -142,6 +142,10 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No such template to render", 500)
 		return
 	}
+	if resultMd == "" {
+		mdHTMLBytes := markdown.ToHTML([]byte("# Results not found"), nil, renderer)
+		resultMd += string(mdHTMLBytes)
+	}
 	data := struct {
 		SearchResults string
 	}{

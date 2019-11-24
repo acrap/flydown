@@ -1,6 +1,7 @@
 function highlightText(element, text){
   var innerHTML = element.innerHTML;
-  var index = innerHTML.indexOf(text);
+  var innerHtmlLow = innerHTML.toLowerCase()
+  var index = innerHtmlLow.indexOf(text);
   if (index >= 0) { 
     innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
     element.innerHTML = innerHTML;
@@ -32,7 +33,7 @@ function get_nodes_containing_text(selector, text) {
     (element) =>
       element.childNodes[0]
       && element.childNodes[0].nodeValue
-      && RegExp(text, "u").test(element.childNodes[0].nodeValue.trim())
+      && RegExp(text, "ui").test(element.childNodes[0].nodeValue.trim())
   );
 }
 
@@ -103,8 +104,9 @@ function getAllUrlParams(url) {
 
 var url = window.location.href
 console.log(url)
-var search_string = getAllUrlParams(url).search_string
-var entry_number = getAllUrlParams(url).n
+var allParams = getAllUrlParams(url)
+var search_string = decodeURI(allParams.search_string)
+var entry_number = allParams.n
 
 // we got search string and entry number, so we should highlight and scroll
 if (search_string != undefined){
