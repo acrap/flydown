@@ -2,27 +2,13 @@ package main
 
 import (
 	"flag"
-	"io"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/NYTimes/gziphandler"
-	"github.com/acrap/flydown/flydown"
-	"github.com/gomarkdown/markdown/ast"
+	flydown "github.com/acrap/flydown/render"
 )
-
-// return (ast.GoToNext, true) to tell html renderer to skip rendering this node
-// (because you've rendered it)
-func renderHookDropCodeBlock(w io.Writer, node ast.Node, entering bool) (ast.WalkStatus, bool) {
-	// skip all nodes that are not CodeBlock nodes
-	if _, ok := node.(*ast.CodeBlock); !ok {
-		return ast.GoToNext, false
-	}
-	// custom rendering logic for ast.CodeBlock. By doing nothing it won't be
-	// present in the output
-	return ast.GoToNext, true
-}
 
 func main() {
 	var folderToHost string
@@ -42,6 +28,7 @@ func main() {
 		http.StripPrefix("/static/",
 			http.FileServer(http.Dir("./static")))))
 	http.HandleFunc("/md/", flydown.RenderMdHandleFunc)
+	http.HandleFunc("/search", flydown.SearchHandleFunc)
 	http.HandleFunc("/", flydown.MainHandleFunc)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

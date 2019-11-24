@@ -24,3 +24,19 @@ a {
 a:hover{
     text-decoration: underline;
 }
+
+#searchbar{
+    border-radius: 25pt;
+    margin-left: 15pt;
+    font-size: 15pt;
+    border: 2px solid rgb(5, 5, 5);
+    padding: 20px; 
+    width: 200px;
+    height: 10pt;  
+}
+#searchbar:focus{
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline:none;
+}
