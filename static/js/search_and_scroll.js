@@ -14,7 +14,7 @@ function scrollAndHighlight(search_str, n) {
   var nodes = get_nodes_containing_text("*", search_string);
   try {
     nodes.forEach(element => {
-      if (currentNumber == parsesInt(n)) {
+      if (currentNumber == parseInt(n)) {
         highlightText(element, search_str);
         element.scrollIntoView({ block: "start", behavior: "smooth" });
         throw BreakException;
