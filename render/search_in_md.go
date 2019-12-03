@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"text/template"
 
 	"github.com/gomarkdown/markdown"
@@ -79,20 +80,48 @@ func searchStringInFile(filename string, searchStr string) (context []string, li
 	return context, lines, err
 }
 
+type result struct {
+	filename string
+	lines    []int
+	context  []string
+}
+
+func searchInMdFiles(searchStr string) chan result {
+	var wg sync.WaitGroup
+	resultsChan := make(chan result, 2)
+	filepath.Walk(folderToHost, func(path string, info os.FileInfo, err error) error {
+		if strings.HasSuffix(path, ".md") {
+			wg.Add(1)
+			go func(path string, searchStr string, resultsChan chan<- result, wg *sync.WaitGroup) {
+				context, lines, err := searchStringInFile(path, searchStr)
+				if err == nil && lines != nil {
+					curResult := result{filename: path, lines: nil}
+					curResult.lines = lines
+					curResult.context = context
+					resultsChan <- curResult
+				}
+				wg.Done()
+			}(path, searchStr, resultsChan, &wg)
+		}
+		return nil
+	})
+
+	go func() {
+		wg.Wait()
+		close(resultsChan)
+	}()
+	return resultsChan
+}
+
 // SearchHandleFunc handler for searching request
 func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
-	type result struct {
-		filename string
-		lines    []int
-		context  []string
-	}
+	var err error
+
 	opts := mdhtml.RendererOptions{
 		Flags:          mdhtml.CommonFlags,
 		RenderNodeHook: nil,
 	}
 	renderer := mdhtml.NewRenderer(opts)
-
-	var results []result
 	resultMd := ""
 	r.ParseForm()
 	searchStr := r.URL.Query().Get("search_string")
@@ -100,27 +129,25 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Empty search request", 400)
 		return
 	}
+	searchStr = strings.ToLower(searchStr)
+	resultsChan := searchInMdFiles(searchStr)
+	entryNum := 0
 
-	err := filepath.Walk(folderToHost, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".md") {
+	waitForTemplateChannel := make(chan []byte)
+	go func(channel chan []byte) {
+		templateBytes, _ := ioutil.ReadFile("./templates/search.html")
+		channel <- templateBytes
+	}(waitForTemplateChannel)
 
-			context, lines, err := searchStringInFile(path, searchStr)
-			if err == nil && lines != nil {
-				curResult := result{filename: path, lines: nil}
-				curResult.lines = lines
-				curResult.context = context
-				results = append(results, curResult)
-			}
+	for {
+		res, ok := <-resultsChan
+		if ok == false {
+			break
 		}
-		return nil
-	})
-
-	for _, r := range results {
-		entryNum := 0
-		for i, c := range r.context {
+		for i, c := range res.context {
 			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
-			fixedLink := strings.ReplaceAll(r.filename, folderToHost, "md")
-			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", r.filename, r.lines[i], fixedLink+additionalParams)
+			fixedLink := strings.ReplaceAll(res.filename, folderToHost, "md")
+			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
 			md := fileAndLineLink + c + "\n" + "\n"
 			mdHTMLBytes := markdown.ToHTML([]byte(md), nil, renderer)
 			resultMd += string(mdHTMLBytes)
@@ -128,15 +155,6 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err != nil {
-		http.Error(w, "Error in search handler", 404)
-	}
-
-	templateBytes, err := ioutil.ReadFile("./templates/search.html")
-	if err != nil {
-		http.Error(w, "No such template to render", 500)
-		return
-	}
 	if resultMd == "" {
 		mdHTMLBytes := markdown.ToHTML([]byte("# Results not found"), nil, renderer)
 		resultMd += string(mdHTMLBytes)
@@ -146,6 +164,12 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 	}{
 		SearchResults: resultMd,
 	}
+	templateBytes := <-waitForTemplateChannel
+	if templateBytes == nil {
+		http.Error(w, "No such template to render", 500)
+		return
+	}
+
 	tmpl, err := template.New("search").Parse(string(templateBytes))
 	err = tmpl.Execute(w, data)
 	if err != nil {
