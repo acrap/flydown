@@ -1,14 +1,31 @@
 var iframe = document.getElementById("markdown")
 
-function selectChapter(chapterELement){
-  // unselect others
+function unselectAllChapters(){
   const elements = [...document.querySelectorAll("a")];
   elements.forEach(element=>{
     element.parentElement.classList.remove("selected")
   })
   
+}
+
+function selectChapter(chapterELement){
+  // unselect others
+  unselectAllChapters()
+  
   // select new one
   chapterELement.parentElement.classList.add("selected")
+}
+
+function selectChapterByURL( url ){
+  const chapters = [...document.querySelectorAll("div.summary a")];
+  chapters.forEach(chapter=>{
+    if(chapter.href.localeCompare(url)==0){
+      selectChapter(chapter)
+      return
+    }
+  })
+  // nothing found
+  unselectAllChapters()
 }
 
 window.onclick = function (e) {
