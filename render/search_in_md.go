@@ -12,9 +12,6 @@ import (
 	"strings"
 	"sync"
 	"text/template"
-
-	"github.com/gomarkdown/markdown"
-	mdhtml "github.com/gomarkdown/markdown/html"
 )
 
 const contextLines int = 4
@@ -89,7 +86,7 @@ type result struct {
 func searchInMdFiles(searchStr string) chan result {
 	var wg sync.WaitGroup
 	resultsChan := make(chan result, 2)
-	filepath.Walk(folderToHost, func(path string, info os.FileInfo, err error) error {
+	filepath.Walk(mdGenerator.rootMdFolder, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".md") {
 			wg.Add(1)
 			go func(path string, searchStr string, resultsChan chan<- result, wg *sync.WaitGroup) {
@@ -117,11 +114,6 @@ func searchInMdFiles(searchStr string) chan result {
 func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 	var err error
 
-	opts := mdhtml.RendererOptions{
-		Flags:          mdhtml.CommonFlags,
-		RenderNodeHook: nil,
-	}
-	renderer := mdhtml.NewRenderer(opts)
 	resultMd := ""
 	r.ParseForm()
 	searchStr := r.URL.Query().Get("search_string")
@@ -146,18 +138,16 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 		for i, c := range res.context {
 			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
-			fixedLink := strings.ReplaceAll(res.filename, folderToHost, "md")
+			fixedLink := strings.ReplaceAll(res.filename, mdGenerator.rootMdFolder, "md")
 			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
 			md := fileAndLineLink + c + "\n" + "\n"
-			mdHTMLBytes := markdown.ToHTML([]byte(md), nil, renderer)
-			resultMd += string(mdHTMLBytes)
+			resultMd += ConvertMdStrToHTML(md)
 			entryNum++
 		}
 	}
 
 	if resultMd == "" {
-		mdHTMLBytes := markdown.ToHTML([]byte("# Results not found"), nil, renderer)
-		resultMd += string(mdHTMLBytes)
+		resultMd += ConvertMdStrToHTML("# Results not found")
 	}
 	data := struct {
 		SearchResults string
