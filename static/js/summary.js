@@ -18,12 +18,13 @@ function selectChapter(chapterELement){
 
 function selectChapterByURL( url ){
   const chapters = [...document.querySelectorAll("div.summary a")];
-  chapters.forEach(chapter=>{
-    if(chapter.href.localeCompare(url)==0){
-      selectChapter(chapter)
-      return
+  for (index in chapters){
+      href = chapters[index].href;
+      if(href.localeCompare(url)==0){
+        selectChapter(chapters[index]);
+        return;
+      }
     }
-  })
   // nothing found
   unselectAllChapters()
 }
