@@ -34,6 +34,6 @@ You can view the result: [http://localhost:8080](http://localhost:8080)
 Markdown folder should have a structure similar to Gitbook. 
 
 It should have at least:
-* *summary.md* (summary, that will be visualized on the left side of the web page) 
-* *readme.md* (the main page) inside.
+* *summary.md* - summary, that will be visualized on the left side of the web page
+* *readme.md* - the main page
 
