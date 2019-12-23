@@ -3,21 +3,12 @@ package flydown
 import (
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"text/template"
 )
 
-var mdGenerator *Generator
-
-// SetFolderToHost used to set the directory with markdown which should be hosted
-func SetFolderToHost(folder string) error {
-	if _, err := os.Stat(folder + string(os.PathSeparator) + "summary.md"); os.IsNotExist(err) {
-		return err
-	}
-	mdGenerator = &Generator{rootMdFolder: folder}
-	return nil
-}
+// MdGenerator is a main markdown generator structure
+var MdGenerator Generator
 
 // RenderMdHandleFunc handler to host markdown as html page on the fly
 func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +17,7 @@ func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unsupported file format", 404)
 	}
 	r.URL.Path = strings.Replace(r.URL.Path, "md/", "", 1)
-	md, err := mdGenerator.NewMarkdownFromFile(r.URL.Path[1:])
+	md, err := MdGenerator.NewMarkdownFromFile(r.URL.Path[1:])
 	if err != nil {
 		http.Error(w, "Cannot parse md file", 404)
 		return
@@ -48,7 +39,7 @@ func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
 
 // MainHandleFunc handler to host the main page with summary on the left side and markdown on the right
 func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
-	md, err := mdGenerator.NewMarkdownFromFile("summary.md")
+	md, err := MdGenerator.NewMarkdownFromFile("summary.md")
 	if err != nil {
 		http.Error(w, "Cannot parse md file", 404)
 		return
@@ -58,10 +49,13 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No such template to render", 500)
 		return
 	}
+
 	data := struct {
 		Summary string
+		Favicon string
 	}{
 		Summary: md.htmlRepresentation,
+		Favicon: MdGenerator.favicon,
 	}
 	tmpl, err := template.New("index").Parse(string(templateBytes))
 	err = tmpl.Execute(w, data)

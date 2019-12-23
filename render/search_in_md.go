@@ -86,7 +86,7 @@ type result struct {
 func searchInMdFiles(searchStr string) chan result {
 	var wg sync.WaitGroup
 	resultsChan := make(chan result, 2)
-	filepath.Walk(mdGenerator.rootMdFolder, func(path string, info os.FileInfo, err error) error {
+	filepath.Walk(MdGenerator.rootMdFolder, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".md") {
 			wg.Add(1)
 			go func(path string, searchStr string, resultsChan chan<- result, wg *sync.WaitGroup) {
@@ -138,7 +138,7 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 		for i, c := range res.context {
 			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
-			fixedLink := strings.ReplaceAll(res.filename, mdGenerator.rootMdFolder, "md")
+			fixedLink := strings.ReplaceAll(res.filename, MdGenerator.rootMdFolder, "md")
 			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
 			md := fileAndLineLink + c + "\n" + "\n"
 			resultMd += ConvertMdStrToHTML(md)
