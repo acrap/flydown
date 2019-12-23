@@ -21,12 +21,17 @@ func main() {
 
 	flag.StringVar(&folderToHost, "share_folder", currentDir, "Path to the directory you want to share")
 	flag.Parse()
-	if err = flydown.SetFolderToHost(folderToHost); err != nil {
+
+	if err = flydown.MdGenerator.Init(folderToHost); err != nil {
 		log.Fatal(err)
 	}
 	http.Handle("/static/", gziphandler.GzipHandler(
 		http.StripPrefix("/static/",
 			http.FileServer(http.Dir("./static")))))
+	http.Handle("/public/", gziphandler.GzipHandler(
+		http.StripPrefix("/public/",
+			http.FileServer(http.Dir(folderToHost+"/public")))))
+
 	http.HandleFunc("/md/", flydown.RenderMdHandleFunc)
 	http.HandleFunc("/search", flydown.SearchHandleFunc)
 	http.HandleFunc("/", flydown.MainHandleFunc)
