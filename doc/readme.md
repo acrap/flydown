@@ -26,9 +26,25 @@ flydown currently supports only simple case insensitive search requests.
 
 The repository contains an example folder with markdown. To serve it, go to the source directory and run:
 ```
-go run ./flydown.go --share_folder=example_md
+go run ./flydown.go serve --shareFolder=doc 
 ```
-You can view the result: [http://localhost:8080](http://localhost:8080)
+You can view the result using the address that will appear in the message on terminal: 
+
+```
+Served on http://127.0.0.1:8080
+```
+So [http://127.0.0.1:8080](http://127.0.0.1:8080) is address used by default.
+
+Here is the full list of flags for serve command:
+
+```
+Flags:
+  -n, --bookName string      Pass the name of your book (default "My book")
+  -h, --help                 help for serve
+  -i, --ip string            Pass the IP addr (default "127.0.0.1")
+  -p, --port int             Pass the port (default 8080)
+  -s, --shareFolder string   Pass the path to directory with markdown content (default "${GOPATH}/src/github.com/acrap/flydown/doc")
+```
 
 ### Markdown folder structure
 
