@@ -1,39 +1,22 @@
+/*
+Copyright © 2019 NAME HERE <EMAIL ADDRESS>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
-import (
-	"flag"
-	"log"
-	"net/http"
-	"os"
-
-	"github.com/NYTimes/gziphandler"
-	flydown "github.com/acrap/flydown/render"
-)
+import "github.com/acrap/flydown/cmd"
 
 func main() {
-	var folderToHost string
-	var currentDir string
-	var err error
-	currentDir, err = os.Getwd()
-	if err != nil {
-		log.Fatal("please pass the folder to share")
-	}
-
-	flag.StringVar(&folderToHost, "share_folder", currentDir, "Path to the directory you want to share")
-	flag.Parse()
-
-	if err = flydown.MdGenerator.Init(folderToHost); err != nil {
-		log.Fatal(err)
-	}
-	http.Handle("/static/", gziphandler.GzipHandler(
-		http.StripPrefix("/static/",
-			http.FileServer(http.Dir("./static")))))
-	http.Handle("/public/", gziphandler.GzipHandler(
-		http.StripPrefix("/public/",
-			http.FileServer(http.Dir(folderToHost+"/public")))))
-
-	http.HandleFunc("/md/", flydown.RenderMdHandleFunc)
-	http.HandleFunc("/search", flydown.SearchHandleFunc)
-	http.HandleFunc("/", flydown.MainHandleFunc)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	cmd.Execute()
 }

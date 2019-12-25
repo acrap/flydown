@@ -51,11 +51,13 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Summary string
-		Favicon string
+		Summary  string
+		Favicon  string
+		BookName string
 	}{
-		Summary: md.htmlRepresentation,
-		Favicon: MdGenerator.favicon,
+		Summary:  md.htmlRepresentation,
+		Favicon:  MdGenerator.favicon,
+		BookName: MdGenerator.bookName,
 	}
 	tmpl, err := template.New("index").Parse(string(templateBytes))
 	err = tmpl.Execute(w, data)

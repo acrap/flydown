@@ -1,3 +1,10 @@
+function externalLinks() {   
+  for(var c = document.getElementsByTagName("a"), a = 0;a < c.length;a++) {
+    var b = c[a];     
+    b.getAttribute("href") && b.hostname !== location.hostname && (b.target = "_blank")   
+  } 
+}; 
+
 function highlightText(element, text) {
   var innerHTML = element.innerHTML;
   var innerHtmlLow = innerHTML.toLowerCase()
@@ -101,6 +108,8 @@ function getAllUrlParams(url) {
 
   return obj;
 }
+
+externalLinks(); 
 
 var url = window.location.href
 console.log(url)

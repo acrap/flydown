@@ -18,6 +18,7 @@ type Markdown struct {
 type Generator struct {
 	rootMdFolder string
 	favicon      string
+	bookName     string
 }
 
 // NewMarkdown create the new Markdown structure
@@ -35,12 +36,13 @@ func NewMarkdown(mdByteArray []byte) (result Markdown) {
 }
 
 // Init initialize new generator
-func (generator *Generator) Init(rootMdFolder string) error {
+func (generator *Generator) Init(rootMdFolder string, bookName string) error {
 	if _, err := os.Stat(rootMdFolder + string(os.PathSeparator) + "summary.md"); os.IsNotExist(err) {
 		return err
 	}
 	generator.rootMdFolder = rootMdFolder
 	generator.favicon = generator.getFavicon()
+	generator.bookName = bookName
 	return nil
 }
 
