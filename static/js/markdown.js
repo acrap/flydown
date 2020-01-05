@@ -112,7 +112,6 @@ function getAllUrlParams(url) {
 externalLinks(); 
 
 var url = window.location.href
-console.log(url)
 var allParams = getAllUrlParams(url)
 var search_string = decodeURI(allParams.search_string)
 var entry_number = allParams.n
@@ -127,8 +126,6 @@ if (entry_number == undefined) {
 } else {
   // we got search string and entry number, so we should highlight and scroll
   if (search_string != undefined) {
-    console.log(search_string + ":" + entry_number)
-
     scrollAndHighlight(search_string, entry_number)
   }
 }
