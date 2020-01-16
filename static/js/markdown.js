@@ -1,10 +1,3 @@
-function externalLinks() {   
-  for(var c = document.getElementsByTagName("a"), a = 0;a < c.length;a++) {
-    var b = c[a];     
-    b.getAttribute("href") && b.hostname !== location.hostname && (b.target = "_blank")   
-  } 
-}; 
-
 function highlightText(element, text) {
   var innerHTML = element.innerHTML;
   var innerHtmlLow = innerHTML.toLowerCase()
@@ -18,7 +11,7 @@ function highlightText(element, text) {
 function scrollAndHighlight(search_str, n) {
   var currentNumber = 0;
   var BreakException;
-  var nodes = get_nodes_containing_text("*", search_string);
+  var nodes = get_nodes_containing_text("div#markdown-viewer > *", search_str);
   try {
     nodes.forEach(element => {
       if (currentNumber == parseInt(n)) {
@@ -108,26 +101,3 @@ function getAllUrlParams(url) {
 
   return obj;
 }
-
-externalLinks(); 
-
-var url = window.location.href
-var allParams = getAllUrlParams(url)
-var search_string = decodeURI(allParams.search_string)
-var entry_number = allParams.n
-
-if (entry_number == undefined) {
-  if(search_string!=undefined){
-    var nodes = get_nodes_containing_text("*", search_string);
-    nodes.forEach(element => {
-    highlightText(element,search_string)
-    })
-  }
-} else {
-  // we got search string and entry number, so we should highlight and scroll
-  if (search_string != undefined) {
-    scrollAndHighlight(search_string, entry_number)
-  }
-}
-
-

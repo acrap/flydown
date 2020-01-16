@@ -10,7 +10,7 @@
 
 Go to sources and run:
 
-```
+```bash
 go get .
 ```
 

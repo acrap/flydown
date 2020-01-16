@@ -6,20 +6,22 @@
   <meta name="GENERATOR" content="github.com/gomarkdown/markdown markdown processor for Go">
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="/static/css/main-page.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/summary.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/{{.Theme}}.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/prism-{{.Theme}}.css">
   <link rel="shortcut icon" href="{{.Favicon}}" type="image/png">
 </head>
 <body>
     <div class="box">
       <div class="summary">        
-          <input id=searchbar type="text" placeholder="Search..">
+          <input id=search-bar type="text" placeholder="Search..">
         {{.Summary}}
       </div>
-      <iframe id="markdown" onLoad="selectChapterByURL(this.contentWindow.location);" style="flex-grow: 30" src="/md/readme.md">
-        <p>Your browser does not support iframes.</p>
-      </iframe>
-      <div style="width: 20px"/>
+    <div id="markdown-viewer">
+      {{.Markdown}}
     </div>
+    <script src="/static/js/cookie.js"></script>
     <script src="/static/js/summary.js"></script>
+    <script src="/static/js/prism.js"></script>
+    <script src="/static/js/markdown.js"></script>
 </body>
 </html>

@@ -3,7 +3,6 @@ package flydown
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -11,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"text/template"
 )
 
 const contextLines int = 4
@@ -112,7 +110,6 @@ func searchInMdFiles(searchStr string) chan result {
 
 // SearchHandleFunc handler for searching request
 func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
-	var err error
 
 	resultMd := ""
 	r.ParseForm()
@@ -123,13 +120,7 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 	}
 	searchStr = strings.ToLower(searchStr)
 	resultsChan := searchInMdFiles(searchStr)
-	entryNum := 0
-
-	waitForTemplateChannel := make(chan []byte)
-	go func(channel chan []byte) {
-		templateBytes, _ := ioutil.ReadFile("./templates/search.html")
-		channel <- templateBytes
-	}(waitForTemplateChannel)
+	entryNumMap := make(map[string]int)
 
 	for {
 		res, ok := <-resultsChan
@@ -137,32 +128,22 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		for i, c := range res.context {
+			var entryNum int
+			var ok bool
+			if entryNum, ok = entryNumMap[res.filename]; !ok {
+				entryNum = 0
+			}
 			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
-			fixedLink := strings.ReplaceAll(res.filename, MdGenerator.rootMdFolder, "md")
+			fixedLink := strings.ReplaceAll(res.filename, MdGenerator.rootMdFolder, "")
 			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
 			md := fileAndLineLink + c + "\n" + "\n"
 			resultMd += ConvertMdStrToHTML(md)
-			entryNum++
+			entryNumMap[res.filename] = entryNum + 1
 		}
 	}
 
 	if resultMd == "" {
 		resultMd += ConvertMdStrToHTML("# Results not found")
 	}
-	data := struct {
-		SearchResults string
-	}{
-		SearchResults: resultMd,
-	}
-	templateBytes := <-waitForTemplateChannel
-	if templateBytes == nil {
-		http.Error(w, "No such template to render", 500)
-		return
-	}
-
-	tmpl, err := template.New("search").Parse(string(templateBytes))
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		http.Error(w, "Cannot get summary", 500)
-	}
+	w.Write([]byte(resultMd))
 }

@@ -1,0 +1,69 @@
+.box{
+    background-color: #2b2a33;
+}
+#markdown-viewer,
+#markdown-viewer > p, 
+#markdown-viewer > * p, 
+#markdown-viewer > * li{
+    line-height: 1.5;
+    font-size: 15pt;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #bab9c9;
+}
+
+#markdown-viewer > h5,
+#markdown-viewer > h4,
+#markdown-viewer > h3,
+#markdown-viewer > h2,
+#markdown-viewer > h1 {
+    color: #d0cee7;
+}
+
+#markdown-viewer > * .highlight {
+    background-color: #f0f006;
+}
+
+#search-bar {
+    background-color: #91909e;
+}
+
+.summary {
+    background-color:#1e1d25;
+}
+
+.summary, 
+.summary > * a{
+    color: #a5a4b3;
+}
+
+.summary > * .selected{
+    background-color:#545454;
+}
+
+#markdown-viewer > a:link,
+#markdown-viewer > * a:link{
+    color: #9892e9;
+}
+#markdown-viewer > a:visited,
+#markdown-viewer > * a:visited{
+    color: #615d99;
+}
+
+#markdown-viewer > a:hover,
+#markdown-viewer > * a:hover{
+    color: #bdb9f5;
+}
+
+blockquote{
+    color: #555555;
+    background:#3e3d49;
+    border-left:8px solid #545454 ;
+}
+
+blockquote::before{
+    color:#545454;
+}
+
+blockquote span{
+    color:#7c7c7c;
+}

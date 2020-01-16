@@ -1,15 +1,40 @@
-
-p{
+#markdown-viewer > p, 
+#markdown-viewer > * p, 
+#markdown-viewer > * li{
     line-height: 1.5;
     font-size: 15pt;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-html {
-    padding-left: 30pt;
-    padding-right: 30pt;
-}
-
-.highlight {
+#markdown-viewer > * .highlight {
     background-color: yellow;
 }
+
+
+#search-bar {
+    background-color: #fffffb;
+}
+
+.summary {
+    background-color: beige;
+}
+
+.summary > * .selected{
+    background-color: rgb(255, 255, 255);
+}
+
+blockquote{
+    color: #555555;
+    background:#EDEDED;
+    border-left:8px solid #78C0A8 ;
+}
+
+blockquote::before{
+    color:#78C0A8;
+}
+
+blockquote span{
+    color:#333333;
+}
+
+

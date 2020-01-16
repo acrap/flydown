@@ -60,7 +60,6 @@ var serveCmd = &cobra.Command{
 			http.StripPrefix("/public/",
 				http.FileServer(http.Dir(folderToHost+"/public")))))
 
-		http.HandleFunc("/md/", flydown.RenderMdHandleFunc)
 		http.HandleFunc("/search", flydown.SearchHandleFunc)
 		http.HandleFunc("/", flydown.MainHandleFunc)
 		fmt.Fprintf(os.Stdout, "Served on http://%s%s\n", ipStr, portStr)

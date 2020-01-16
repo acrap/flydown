@@ -57,7 +57,7 @@ It should have at least:
 ## summary.md example
 
 ```markdown
-* [Getting Started](/md/readme.md)
-* [Dependencies](md/deps.md)
+* [Getting Started](readme.md)
+* [Dependencies](deps.md)
 ```
 

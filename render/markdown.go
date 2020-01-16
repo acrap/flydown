@@ -1,6 +1,7 @@
 package flydown
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -19,6 +20,8 @@ type Generator struct {
 	rootMdFolder string
 	favicon      string
 	bookName     string
+	summaryName  string
+	readmeName   string
 }
 
 // NewMarkdown create the new Markdown structure
@@ -35,12 +38,44 @@ func NewMarkdown(mdByteArray []byte) (result Markdown) {
 	return
 }
 
-// Init initialize new generator
-func (generator *Generator) Init(rootMdFolder string, bookName string) error {
-	if _, err := os.Stat(rootMdFolder + string(os.PathSeparator) + "summary.md"); os.IsNotExist(err) {
+func searchForFilename(nameList []string, folder string) (result string, err error) {
+	for _, fileName := range nameList {
+		if _, err := os.Stat(folder + string(os.PathSeparator) + fileName); !os.IsNotExist(err) {
+			return fileName, nil
+		}
+	}
+	return "", os.ErrNotExist
+}
+
+// FindSummary finds and stores summary filename
+func (generator *Generator) FindSummary() error {
+	summaryName, err := searchForFilename([]string{"summary.md", "SUMMARY.md", "Summary.md"}, generator.rootMdFolder)
+	if err != nil {
 		return err
 	}
+	generator.summaryName = summaryName
+	return nil
+}
+
+// FindReadme finds and stores readme filename
+func (generator *Generator) FindReadme() error {
+	readmeName, err := searchForFilename([]string{"readme.md", "README.md", "Readme.md"}, generator.rootMdFolder)
+	if err != nil {
+		return err
+	}
+	generator.readmeName = readmeName
+	return nil
+}
+
+// Init initialize new generator
+func (generator *Generator) Init(rootMdFolder string, bookName string) error {
 	generator.rootMdFolder = rootMdFolder
+	if err := generator.FindSummary(); err != nil {
+		return fmt.Errorf("Summary file is not found")
+	}
+	if err := generator.FindReadme(); err != nil {
+		return fmt.Errorf("Readme file is not found")
+	}
 	generator.favicon = generator.getFavicon()
 	generator.bookName = bookName
 	return nil

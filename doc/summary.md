@@ -1,2 +1,2 @@
-* [Getting Started](/md/readme.md)
-* [Dependencies](md/deps.md)
+* [Getting Started](readme.md)
+* [Dependencies](deps.md)

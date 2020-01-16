@@ -15,8 +15,120 @@ body{
     min-height:  100vw;
 }
 
-iframe{
-    border: none;
-    min-height:  100vw;
-    padding-left: 20px;
+#markdown-viewer {
+    float: right;
+    padding-left: 5%;
+    width: 70%;
+    word-wrap: normal;
+    height: 100%;
 }
+
+.summary{
+    padding-top: 0px;
+    padding-right: 0px;
+    min-height:  100vw;
+    flex-basis: content;
+}
+
+.summary > h1,
+.summary > h2,
+.summary > h3{
+    padding-left: 10pt;
+}
+
+.summary > p {
+    padding-top: 10px;
+}
+
+.summary > * li{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.summary > * p, li:has(a) {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 15pt;
+    margin-left: 0pt;
+    padding-left: 0pt;
+    width: 100%;
+}
+
+.summary > ul,
+.summary > * ul {
+    font-size: 15pt;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    list-style-type:none;
+    list-style: none;
+}
+
+.summary > ul {
+    padding-left: 0pt;
+}
+
+.summary > * ul {
+    padding-left: 15pt;
+}
+
+.summary > * a {
+    text-decoration: none;
+    display: block;
+    height: 30pt;
+    color: black;
+    padding-top: 10pt;
+    padding-left: 10pt;
+    padding-right: 10pt;
+}
+.summary > * a:hover{
+    text-decoration: underline;
+}
+
+#search-bar{
+    margin-top: 0pt;
+    padding-top: 0pt;
+    margin-left: 0pt;
+    padding-left: 0pt;
+    margin-bottom: 15pt;
+    font-size: 15pt;
+    border: 0;
+    padding: 20px; 
+    width: auto;
+    height: 10pt;  
+}
+
+#search-bar:focus{
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline:none;
+}
+
+blockquote{
+    font-size: 1.4em;
+    margin:50px auto;
+    font-style:italic;
+    padding:1.2em 30px 1.2em 75px;
+    line-height:1.6;
+    position: relative;
+  }
+  
+  blockquote::before{
+    font-family:Arial;
+    font-size:4em;
+    position: absolute;
+    left: 10px;
+    top:-10px;
+  }
+  
+  blockquote::after{
+    content: '';
+  }
+  
+  blockquote span{
+    display:block;
+    font-style: normal;
+    font-weight: bold;
+    margin-top:1em;
+  }
