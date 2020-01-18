@@ -1,4 +1,7 @@
 # flydown
+
+![logo](https://i.ibb.co/sq28KyP/flydown-logo-small.png)
+
 ![flydown_screenshot](https://i.ibb.co/Fx4j29v/Screenshot-from-2019-12-20-15-38-03.png)
 
 Simple, cross-platform and lightweight markdown server written on Go. Renders HTML from markdown on the fly. 

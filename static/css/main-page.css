@@ -151,11 +151,28 @@ blockquote span{
     margin-top:1em;
 }
 
-button{
+#mode-switcher:hover{
+    opacity: 1;
+}
+
+#mode-switcher{
     float: right;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 10.5pt;
+    opacity: 0.4;
+}
+
+#markdown-viewer > p, 
+#markdown-viewer > * p, 
+#markdown-viewer > * li{
+    line-height: 1.5;
+    font-size: 12pt;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+
+#markdown-viewer > h5,
+#markdown-viewer > h4,
+#markdown-viewer > h3,
+#markdown-viewer > h2,
+#markdown-viewer > h1 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }

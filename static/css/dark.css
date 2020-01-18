@@ -6,9 +6,6 @@
 #markdown-viewer > p, 
 #markdown-viewer > * p, 
 #markdown-viewer > * li{
-    line-height: 1.5;
-    font-size: 12pt;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #bab9c9;    
 }
 
