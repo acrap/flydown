@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-const defaultColorTheme = "dark"
+const defaultColorTheme = "light"
 
 type preferences struct {
 	lastPage string

@@ -49,7 +49,6 @@ function doMdRequest(md_addr) {
       }else{
         COOKIE.set("last-page",md_addr, 1);
       }
-      
     }
   }
   
@@ -60,13 +59,16 @@ function doMdRequest(md_addr) {
         highlightText(element, search_string)
       })
     }
+    // scroll to the top
+    var book_body = document.querySelector(".book-body");
+    book_body.scrollTop = 0;
+
   } else {
     // we got search string and entry number, so we should highlight and scroll
     if (search_string != undefined) {
       scrollAndHighlight(search_string, entry_number)
     }
   }
-  
 }
 
 // catch clicks on links to handle them properly 
@@ -96,6 +98,14 @@ search_bar.addEventListener("keyup", function(event) {
   }
 });
 
-
+function switchMode(){
+  theme = COOKIE.get("theme");
+  if ((theme == null)||
+  (theme.localeCompare("light")==0)){
+    COOKIE.set("theme", "dark");
+  }else{
+    COOKIE.set("theme", "light");
+  }
+}
 
 

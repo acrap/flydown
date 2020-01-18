@@ -135,8 +135,8 @@ func SearchHandleFunc(w http.ResponseWriter, r *http.Request) {
 			}
 			additionalParams := fmt.Sprintf("?%s=%s&%s=%s&", "search_string", searchStr, "n", strconv.Itoa(entryNum))
 			fixedLink := strings.ReplaceAll(res.filename, MdGenerator.rootMdFolder, "")
-			fileAndLineLink := fmt.Sprintf("[%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
-			md := fileAndLineLink + c + "\n" + "\n"
+			fileAndLineLink := fmt.Sprintf("### [%s:%d](%s)\n\n", res.filename, res.lines[i], fixedLink+additionalParams)
+			md := "***" + "\n" + fileAndLineLink + c + "\n" + "\n"
 			resultMd += ConvertMdStrToHTML(md)
 			entryNumMap[res.filename] = entryNum + 1
 		}

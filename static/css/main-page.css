@@ -1,33 +1,44 @@
 html, body{
     padding: 0;
     margin: 0;
+    text-rendering: optimizeLegibility;
 }
 html{
     height: 100%;
-}
-body{
-    min-height: 100%;
 }
 
 .box{
     display: flex;
     flex-direction: row;
-    min-height:  100vw;
+    max-height:  100vw;
 }
 
-#markdown-viewer {
-    float: right;
-    padding-left: 5%;
-    width: 70%;
+.book-body{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 17vw;
+    width: 83vw;
     word-wrap: normal;
-    height: 100%;
+    overflow-y: auto;
+}
+
+#markdown-viewer{
+    max-width: 50vw;
+    position: relative;
+    margin: 0 auto;
 }
 
 .summary{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    width: 17vw;
     padding-top: 0px;
     padding-right: 0px;
-    min-height:  100vw;
-    flex-basis: content;
+    overflow-y: auto;
+    box-sizing: border-box;
+    z-index: 1;
 }
 
 .summary > h1,
@@ -37,7 +48,7 @@ body{
 }
 
 .summary > p {
-    padding-top: 10px;
+    padding-top: 7pt;
 }
 
 .summary > * li{
@@ -56,7 +67,7 @@ body{
 
 .summary > ul,
 .summary > * ul {
-    font-size: 15pt;
+    font-size: 10.5pt;
     margin-top: 0px;
     margin-bottom: 0px;
     margin-left: 0px;
@@ -77,7 +88,7 @@ body{
     display: block;
     height: 30pt;
     color: black;
-    padding-top: 10pt;
+    padding-top: 4pt;
     padding-left: 10pt;
     padding-right: 10pt;
 }
@@ -91,10 +102,10 @@ body{
     margin-left: 0pt;
     padding-left: 0pt;
     margin-bottom: 15pt;
-    font-size: 15pt;
+    font-size: 12pt;
     border: 0;
     padding: 20px; 
-    width: auto;
+    width: inherit;
     height: 10pt;  
 }
 
@@ -112,23 +123,32 @@ blockquote{
     padding:1.2em 30px 1.2em 75px;
     line-height:1.6;
     position: relative;
-  }
-  
-  blockquote::before{
+}
+
+blockquote::before{
     font-family:Arial;
     font-size:4em;
     position: absolute;
     left: 10px;
     top:-10px;
-  }
-  
-  blockquote::after{
+}
+
+blockquote::after{
     content: '';
-  }
-  
-  blockquote span{
+}
+
+blockquote span{
     display:block;
     font-style: normal;
     font-weight: bold;
     margin-top:1em;
-  }
+}
+
+button{
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10.5pt;
+}

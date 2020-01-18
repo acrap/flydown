@@ -16,8 +16,15 @@
           <input id=search-bar type="text" placeholder="Search..">
         {{.Summary}}
       </div>
-    <div id="markdown-viewer">
-      {{.Markdown}}
+    <div class="book-body">
+      <div class="book-header">
+        <form>
+          <button id="mode_switcher" onclick="switchMode()">Switch mode</button>
+        </form>
+      </div>
+      <div id="markdown-viewer">
+        {{.Markdown}}
+      </div>
     </div>
     <script src="/static/js/cookie.js"></script>
     <script src="/static/js/summary.js"></script>
