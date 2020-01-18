@@ -108,7 +108,7 @@ function switchMode() {
   }
 }
 
-var hideButton = document.getElementById("hide")
+var hideButton = document.getElementById("hide-button")
 book_body = document.querySelector(".book-body");
 summary = document.querySelector(".summary");
 

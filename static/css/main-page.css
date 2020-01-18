@@ -157,7 +157,6 @@ blockquote span{
 
 #mode-switcher{
     float: right;
-    opacity: 0.4;
 }
 
 #markdown-viewer > p, 
@@ -168,11 +167,15 @@ blockquote span{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+input{
+    opacity: 0.4;
+    outline: none;
+}
 
-#markdown-viewer > h5,
-#markdown-viewer > h4,
-#markdown-viewer > h3,
-#markdown-viewer > h2,
-#markdown-viewer > h1 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+#mode-switcher-button{
+    float: right;
+}
+
+input:hover{
+    opacity: 1;
 }
