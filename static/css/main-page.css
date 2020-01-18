@@ -105,8 +105,9 @@ html{
     font-size: 12pt;
     border: 0;
     padding: 20px; 
-    width: inherit;
-    height: 10pt;  
+    height: 10pt; 
+    width: -moz-available; 
+    width:-webkit-fill-available;
 }
 
 #search-bar:focus{
@@ -145,10 +146,10 @@ blockquote span{
 }
 
 button{
+    float: right;
     border: none;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 10.5pt;
 }
