@@ -91,9 +91,15 @@ html{
     padding-top: 4pt;
     padding-left: 10pt;
     padding-right: 10pt;
+    outline: none;
 }
 .summary > * a:hover{
     text-decoration: underline;
+}
+
+.summary > * .selected{
+    text-decoration: underline;
+    font-size: 12pt;
 }
 
 #search-bar{

@@ -38,10 +38,6 @@
     color: #a5a4b3;
 }
 
-.summary > * .selected{
-    background-color:#545454;
-}
-
 #markdown-viewer > a:link,
 #markdown-viewer > * a:link{
     color: #9892e9;
