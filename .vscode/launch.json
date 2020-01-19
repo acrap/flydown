@@ -11,7 +11,7 @@
             "mode": "auto",
             "program": "/home/acrap/go/src/github.com/acrap/flydown/flydown.go",
             "env": {},
-            "args": ["-share_folder=example_md" ]
+            "args": ["serve" ]
         }
     ]
 }

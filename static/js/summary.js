@@ -27,6 +27,11 @@ function selectChapterByURL(url) {
   unselectAllChapters()
 }
 
+function calcChapterUrl(md_url){
+  md_url = md_url.replace("/","%2F")
+  return "/"+md_url.replace(".md","")
+}
+
 function doMdRequest(md_addr) {
   var xhr = new XMLHttpRequest();
   var allParams = getAllUrlParams(md_addr);
@@ -42,6 +47,8 @@ function doMdRequest(md_addr) {
     md_viewer.innerHTML = ""
     md_viewer.innerHTML = xhr.responseText;
     Prism.highlightAll();
+
+    window.history.pushState("",md_addr,calcChapterUrl(md_addr));
     // store the last page for 1 day, but not search pages
     if (!md_addr.includes("search?search_string")) {
       if (md_addr.includes("search_string")) {
@@ -77,9 +84,10 @@ window.onclick = function (e) {
     e.preventDefault();
     var link_addr = e.target.getAttribute("href");
     if (e.target.host == window.location.host) {
-      doMdRequest(link_addr)
       // select new one
-      selectChapter(e.target)
+      selectChapter(e.target);
+
+      doMdRequest(link_addr)
     }
     else {
       window.open(link_addr, '_blank');
@@ -98,7 +106,9 @@ search_bar.addEventListener("keyup", function (event) {
   }
 });
 
-function switchMode() {
+function switchMode(event) {
+  event = event || window.event;
+  event.preventDefault();
   theme = COOKIE.get("theme");
   if ((theme == null) ||
     (theme.localeCompare("light") == 0)) {
@@ -106,14 +116,16 @@ function switchMode() {
   } else {
     COOKIE.set("theme", "light");
   }
+  location.reload()
 }
 
 var hideButton = document.getElementById("hide-button")
 book_body = document.querySelector(".book-body");
 summary = document.querySelector(".summary");
 
-hideButton.onclick = function (e) {
-  e.preventDefault();
+function toggleSummary(event){
+  event = event || window.event;
+  event.preventDefault();
   if (summary.hidden) {
     summary.hidden = false;
     book_body.style.left = "17vw";
@@ -124,3 +136,7 @@ hideButton.onclick = function (e) {
     book_body.style.width = "100vw";
   }
 }
+
+window.addEventListener('popstate', function(event) {
+  this.location.reload()
+}, false);
