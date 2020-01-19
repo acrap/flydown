@@ -79,7 +79,7 @@ window.onclick = function (e) {
     if (e.target.host == window.location.host) {
       doMdRequest(link_addr)
       // select new one
-      selectChapter(e.target)
+      selectChapter(e.target);
     }
     else {
       window.open(link_addr, '_blank');
@@ -98,7 +98,9 @@ search_bar.addEventListener("keyup", function (event) {
   }
 });
 
-function switchMode() {
+function switchMode(event) {
+  event = event || window.event;
+  event.preventDefault();
   theme = COOKIE.get("theme");
   if ((theme == null) ||
     (theme.localeCompare("light") == 0)) {
@@ -106,14 +108,16 @@ function switchMode() {
   } else {
     COOKIE.set("theme", "light");
   }
+  location.reload()
 }
 
 var hideButton = document.getElementById("hide-button")
 book_body = document.querySelector(".book-body");
 summary = document.querySelector(".summary");
 
-hideButton.onclick = function (e) {
-  e.preventDefault();
+function toggleSummary(event){
+  event = event || window.event;
+  event.preventDefault();
   if (summary.hidden) {
     summary.hidden = false;
     book_body.style.left = "17vw";
