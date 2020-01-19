@@ -27,6 +27,11 @@ function selectChapterByURL(url) {
   unselectAllChapters()
 }
 
+function calcChapterUrl(md_url){
+  md_url = md_url.replace("/","%2F")
+  return "/"+md_url.replace(".md","")
+}
+
 function doMdRequest(md_addr) {
   var xhr = new XMLHttpRequest();
   var allParams = getAllUrlParams(md_addr);
@@ -42,6 +47,8 @@ function doMdRequest(md_addr) {
     md_viewer.innerHTML = ""
     md_viewer.innerHTML = xhr.responseText;
     Prism.highlightAll();
+
+    window.history.pushState("",md_addr,calcChapterUrl(md_addr));
     // store the last page for 1 day, but not search pages
     if (!md_addr.includes("search?search_string")) {
       if (md_addr.includes("search_string")) {
@@ -77,9 +84,10 @@ window.onclick = function (e) {
     e.preventDefault();
     var link_addr = e.target.getAttribute("href");
     if (e.target.host == window.location.host) {
-      doMdRequest(link_addr)
       // select new one
       selectChapter(e.target);
+
+      doMdRequest(link_addr)
     }
     else {
       window.open(link_addr, '_blank');
@@ -128,3 +136,7 @@ function toggleSummary(event){
     book_body.style.width = "100vw";
   }
 }
+
+window.addEventListener('popstate', function(event) {
+  this.location.reload()
+}, false);

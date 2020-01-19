@@ -50,6 +50,8 @@ func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
 
 // MainHandleFunc handler to host the main page with summary on the left side and markdown on the right
 func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
+	var mdPage *Markdown
+	var err error
 	if strings.Contains(r.URL.Path, ".md") {
 		RenderMdHandleFunc(w, r)
 		return
@@ -67,11 +69,19 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	preferences := getUserPreferences(r)
-	mdPage, err := MdGenerator.NewMarkdownFromFile(preferences.lastPage)
+	var pageAddr string
+	if len(r.URL.Path) > 1 {
+		pageAddr = strings.ReplaceAll(r.URL.Path[1:], "%2F", "/") + ".md"
+	} else {
+		pageAddr = preferences.lastPage
+	}
+
+	mdPage, err = MdGenerator.NewMarkdownFromFile(pageAddr)
 	if err != nil {
-		http.Error(w, "Cannot load readme", 500)
+		http.Error(w, "Cannot load the page", 500)
 		return
 	}
+
 	data := struct {
 		Theme    string
 		Summary  string
