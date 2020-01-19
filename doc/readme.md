@@ -2,11 +2,13 @@
 
 ![logo](https://i.ibb.co/sq28KyP/flydown-logo-small.png)
 
-![flydown_screenshot](https://i.ibb.co/Fx4j29v/Screenshot-from-2019-12-20-15-38-03.png)
-
 Simple, cross-platform and lightweight markdown server written on Go. Renders HTML from markdown on the fly. 
 
 In addition to the standard syntax flydown supports some extensions, such as: tables, fenced code blocks, definition lists etc. The full list you can find [in this chapter in gomarkdown(backend) readme](https://github.com/gomarkdown/markdown#extensions).
+
+[![flydown.gif](https://s5.gifyu.com/images/flydown4f30dd47ccd462e7.gif)](https://gifyu.com/image/mJP3)
+
+The video is scaled in purpose to make the content more visible. To check the original scale see the image by [the link](https://s5.gifyu.com/images/flydown_orig_scale.png).
 
 ## Current status
 
