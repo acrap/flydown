@@ -17,11 +17,13 @@ type Markdown struct {
 
 // Generator is a struct that keeps common settings for markdown generator
 type Generator struct {
-	rootMdFolder string
-	favicon      string
-	bookName     string
-	summaryName  string
-	readmeName   string
+	verbose           bool
+	flydownDataFolder string
+	rootMdFolder      string
+	favicon           string
+	bookName          string
+	summaryName       string
+	readmeName        string
 }
 
 // NewMarkdown create the new Markdown structure
@@ -67,8 +69,13 @@ func (generator *Generator) FindReadme() error {
 	return nil
 }
 
+//EnableVerbose enables verbose mode for generator
+func (generator *Generator) EnableVerbose() {
+	generator.verbose = true
+}
+
 // Init initialize new generator
-func (generator *Generator) Init(rootMdFolder string, bookName string) error {
+func (generator *Generator) Init(flydownDataFolder string, rootMdFolder string, bookName string) error {
 	generator.rootMdFolder = rootMdFolder
 	if err := generator.FindSummary(); err != nil {
 		return fmt.Errorf("Summary file is not found")
@@ -78,6 +85,7 @@ func (generator *Generator) Init(rootMdFolder string, bookName string) error {
 	}
 	generator.favicon = generator.getFavicon()
 	generator.bookName = bookName
+	generator.flydownDataFolder = flydownDataFolder
 	return nil
 }
 
@@ -86,6 +94,10 @@ func (generator *Generator) getFavicon() string {
 	fullPath := string(os.PathSeparator) + "public" + string(os.PathSeparator) + "favicon.png"
 	_, err := os.Stat(generator.rootMdFolder + fullPath)
 	if os.IsNotExist(err) {
+		if generator.verbose {
+			fmt.Println("Default favicon is used. You can create your own there " +
+				generator.rootMdFolder + fullPath)
+		}
 		return "/static/images/favicon.png"
 	}
 	return fullPath

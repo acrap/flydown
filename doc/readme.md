@@ -44,11 +44,12 @@ Here is the full list of flags for serve command:
 
 ```
 Flags:
-  -n, --bookName string      Pass the name of your book (default "My book")
-  -h, --help                 help for serve
-  -i, --ip string            Pass the IP addr (default "127.0.0.1")
-  -p, --port int             Pass the port (default 8080)
-  -s, --shareFolder string   Pass the path to directory with markdown content (default "${GOPATH}/src/github.com/acrap/flydown/doc")
+  -n, --bookName string   Pass the name of your book (default "My book")
+  -f, --folder string     Directory with markdown content to host (flydown documentation by default) 
+  -h, --help              help for serve
+  -i, --ip string         Pass the IP addr (default "127.0.0.1")
+  -p, --port int          Pass the port (default 8080)
+  -v, --verbose           Enable verbose
 ```
 
 ### Markdown folder structure

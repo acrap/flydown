@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -31,34 +30,53 @@ import (
 const defPort = 8080
 const defBookName = "My book"
 
+var verbose *bool
+
+var flydownDataFolder string
+
+func detectFlydownDataFolder() {
+	flydownDataFolder, _ = os.Getwd()
+	flydownDataFolder += string(os.PathSeparator)
+	if _, err := os.Stat(flydownDataFolder +
+		"templates" + string(os.PathSeparator) + "flydown-index.html"); os.IsNotExist(err) {
+		flydownDataFolder = "/usr/share/flydown/"
+	}
+}
+
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "serve markdown folder",
 	Run: func(cmd *cobra.Command, args []string) {
-		var folderToHost string
 		var err error
 
 		if err != nil {
 			log.Fatal("please pass the folder to share")
 		}
 
-		folderToHost, _ = cmd.Flags().GetString("shareFolder")
+		mdFolder, _ := cmd.Flags().GetString("folder")
+
 		port, _ := cmd.Flags().GetInt("port")
 		portStr := ":" + strconv.Itoa(port)
 		bookName, _ := cmd.Flags().GetString("bookName")
 		ipStr, _ := cmd.Flags().GetString("ip")
-		flag.Parse()
 
-		if err = flydown.MdGenerator.Init(folderToHost, bookName); err != nil {
+		if *verbose {
+			flydown.MdGenerator.EnableVerbose()
+			fmt.Println("Use static flydown files from the following directory: ", flydownDataFolder)
+			fmt.Println("Markdown folder is set to:" + mdFolder)
+		}
+		if err = flydown.MdGenerator.Init(flydownDataFolder, mdFolder, bookName); err != nil {
 			log.Fatal(err)
 		}
+
 		http.Handle("/static/", gziphandler.GzipHandler(
 			http.StripPrefix("/static/",
-				http.FileServer(http.Dir("./static")))))
+				http.FileServer(http.Dir(flydownDataFolder+string(os.PathSeparator)+"static")))))
+
 		http.Handle("/public/", gziphandler.GzipHandler(
 			http.StripPrefix("/public/",
-				http.FileServer(http.Dir(folderToHost+"/public")))))
+				http.FileServer(http.Dir(mdFolder+"/public")))))
 
 		http.HandleFunc("/search", flydown.SearchHandleFunc)
 		http.HandleFunc("/", flydown.MainHandleFunc)
@@ -69,9 +87,11 @@ var serveCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(serveCmd)
-	currentDir, _ := os.Getwd()
-	serveCmd.Flags().StringP("shareFolder", "s", currentDir+string(os.PathSeparator)+"doc", "Pass the path to directory with markdown content")
+	detectFlydownDataFolder()
+	serveCmd.Flags().StringP("folder", "f", flydownDataFolder+"doc", "Directory with markdown content to host")
 	serveCmd.Flags().StringP("ip", "i", "127.0.0.1", "Pass the IP addr")
 	serveCmd.Flags().IntP("port", "p", defPort, "Pass the port")
 	serveCmd.Flags().StringP("bookName", "n", defBookName, "Pass the name of your book")
+	verbose = serveCmd.Flags().BoolP("verbose", "v", false, "Enable verbose")
+
 }

@@ -9,30 +9,8 @@ import (
 
 const defaultColorTheme = "light"
 
-type preferences struct {
-	lastPage string
-	theme    string
-}
-
 // MdGenerator is a main markdown generator structure
 var MdGenerator Generator
-
-func getUserPreferences(r *http.Request) (c preferences) {
-	userCookie, err := r.Cookie("last-page")
-	if err != nil {
-		c.lastPage = MdGenerator.readmeName
-	} else {
-		c.lastPage = userCookie.Value
-	}
-
-	userCookie, err = r.Cookie("theme")
-	if err != nil {
-		c.theme = defaultColorTheme
-	} else {
-		c.theme = userCookie.Value
-	}
-	return
-}
 
 // RenderMdHandleFunc handler to host markdown as html page on the fly
 func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +22,7 @@ func RenderMdHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Cannot parse md file", 404)
 		return
 	}
+	saveLastPageInCookies(r.URL.Path[1:], w)
 	w.Write([]byte(md.htmlRepresentation))
 
 }
@@ -62,7 +41,8 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Cannot parse md file", 404)
 		return
 	}
-	templateBytes, err := ioutil.ReadFile("./templates/index.html")
+
+	templateBytes, err := ioutil.ReadFile(MdGenerator.flydownDataFolder + "/templates/flydown-index.html")
 	if err != nil {
 		http.Error(w, "No such template to render", 500)
 		return
@@ -77,6 +57,7 @@ func MainHandleFunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mdPage, err = MdGenerator.NewMarkdownFromFile(pageAddr)
+
 	if err != nil {
 		http.Error(w, "Cannot load the page", 500)
 		return

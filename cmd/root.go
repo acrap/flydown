@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-	"os"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +28,7 @@ var rootCmd = &cobra.Command{
 	Use:     "flydown",
 	Short:   "Fast markdown server",
 	Long:    "flydown can be used to share project documentation, e-book or pretty much anything that written on markdown",
-	Example: "flydown serve --shareFolder=pathToMarkdownFolder",
+	Example: "flydown serve --folder=pathToMarkdownFolder",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) {
@@ -40,8 +39,7 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 }

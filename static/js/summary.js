@@ -49,14 +49,6 @@ function doMdRequest(md_addr) {
     Prism.highlightAll();
 
     window.history.pushState("",md_addr,calcChapterUrl(md_addr));
-    // store the last page for 1 day, but not search pages
-    if (!md_addr.includes("search?search_string")) {
-      if (md_addr.includes("search_string")) {
-        COOKIE.set("last-page", md_addr.substring(0, md_addr.indexOf('?')));
-      } else {
-        COOKIE.set("last-page", md_addr, 1);
-      }
-    }
   }
 
   if (entry_number == undefined) {

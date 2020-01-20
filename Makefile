@@ -1,4 +1,4 @@
-DESTDIR ?= /usr/local/flydown/
+DESTDIR ?= /usr/share/flydown/
 LINKER_FLAGS = -ldflags="-s -w"
 
 .PHONY: get_deps
@@ -23,9 +23,9 @@ compile_arm7:
 compile_arm8:
 	GOARCH=arm64 go build $(LINKER_FLAGS) flydown.go 
 
-install:compile
+install:
 	install -d $(DESTDIR)
-	cp -f flydown $(DESTDIR)/bin
+	cp -f flydown /usr/bin
 	cp -r doc $(DESTDIR)
 	cp -r static $(DESTDIR)
 	cp -r templates $(DESTDIR)
