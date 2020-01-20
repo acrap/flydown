@@ -1,5 +1,40 @@
-p{
-    line-height: 1.5;
-    font-size: 15pt;
-    font-family: Arial, Helvetica, sans-serif;
+.book-body{
+    background-color: #eeeeee;
 }
+
+
+#markdown-viewer > * .highlight {
+    background-color: yellow;
+}
+
+
+#search-bar {
+    background-color: #EDEDED;
+}
+
+.summary {
+    background-color: #d9d9d9;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+blockquote{
+    color: #555555;
+    background:#EDEDED;
+    border-left:8px solid #78C0A8 ;
+}
+
+blockquote::before{
+    color:#78C0A8;
+}
+
+blockquote span{
+    color:#333333;
+}
+
+
+#mode-switcher{
+    background-color: #EDEDED;
+    color: #333333;
+    opacity: 0.4;
+}
+

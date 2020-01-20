@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run & open browser",
+            "type": "shell",
+            "command": "go run ./flydown.go serve; google-chrome http://localhost:8080",
+            "options": {
+                "cwd": "/home/salamandra/go/src/github.com/acrap/flydown"
+            },
+            "problemMatcher": [],
+        },
+        
+    ]
+}
