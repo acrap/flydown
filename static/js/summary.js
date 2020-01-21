@@ -1,3 +1,5 @@
+let buildInStylesPath = "/static/css/"
+
 function unselectAllChapters() {
   const elements = [...document.querySelectorAll("a")];
   elements.forEach(element => {
@@ -102,13 +104,19 @@ function switchMode(event) {
   event = event || window.event;
   event.preventDefault();
   theme = COOKIE.get("theme");
+  mainStyle = document.getElementById("theme-css")
+  prismStyle = document.getElementById("prism-theme-css")
   if ((theme == null) ||
     (theme.localeCompare("light") == 0)) {
     COOKIE.set("theme", "dark");
+    mainStyle.href = buildInStylesPath + "dark.css"
+    prismStyle.href = buildInStylesPath + "prism-dark.css"
   } else {
     COOKIE.set("theme", "light");
+    mainStyle.href = buildInStylesPath + "light.css"
+    prismStyle.href = buildInStylesPath + "prism-light.css"
   }
-  location.reload()
+  Prism.highlightAll();
 }
 
 var hideButton = document.getElementById("hide-button")
