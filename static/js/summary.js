@@ -30,8 +30,8 @@ function selectChapterByURL(url) {
 }
 
 function calcChapterUrl(md_url){
-  md_url = md_url.replace("/","%2F")
-  return "/"+md_url.replace(".md","")
+  md_url = md_url.replace(/\//g,"%2F")
+  return "/" + md_url.replace(".md","")
 }
 
 function doMdRequest(md_addr) {
@@ -49,8 +49,10 @@ function doMdRequest(md_addr) {
     md_viewer.innerHTML = ""
     md_viewer.innerHTML = xhr.responseText;
     Prism.highlightAll();
-
-    window.history.pushState("",md_addr,calcChapterUrl(md_addr));
+    if (!md_addr.includes("/search?search_string=")){
+      console.log("pushState " + calcChapterUrl(md_addr))
+      window.history.pushState("",md_addr,calcChapterUrl(md_addr));
+    }
   }
 
   if (entry_number == undefined) {
