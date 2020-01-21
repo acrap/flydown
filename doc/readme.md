@@ -27,6 +27,33 @@ flydown currently supports only simple case insensitive search requests.
 
 > Windows support is untested yet
 
+## Installation
+
+Download the latest binary release for your architecture here: [https://github.com/acrap/flydown/releases](https://github.com/acrap/flydown/releases)
+
+```bash
+wget https://github.com/acrap/flydown/releases/download/0.1.2/flydown_0.1.2_amd64.tar.xz
+```
+
+Extract the archive:
+
+```bash
+tar -xf flydown_0.1.2_amd64.tar.xz
+```
+
+Go to the directory and run install.sh script as superuser (it copies some files to `/usr/share/flydown` and binary to `/usr/bin`)
+
+```bash
+cd flydown_0.1.2_amd64
+sudo ./install.sh
+```
+
+That's it. Now you can run flydown to serve it's own documentation as simple as:
+
+```bash
+flydown serve
+```
+
 ## Usage 
 
 The repository contains an example folder with markdown. To serve it, go to the source directory and run:
