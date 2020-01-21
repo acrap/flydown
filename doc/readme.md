@@ -1,5 +1,6 @@
-# flydown
+![badge](https://action-badges.now.sh/acrap/flydown?action=Go)
 
+# flydown
 ![logo](https://i.ibb.co/sq28KyP/flydown-logo-small.png)
 
 Simple, cross-platform and lightweight markdown server written on Go. Renders HTML from markdown on the fly. 
