@@ -59,7 +59,7 @@ flydown serve
 
 The repository contains an example folder with markdown. To serve it, go to the source directory and run:
 ```
-go run ./flydown.go serve --shareFolder=doc 
+go run ./flydown.go serve --folder=doc 
 ```
 You can view the result using the address that will appear in the message on terminal: 
 
