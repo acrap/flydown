@@ -151,14 +151,6 @@ blockquote span{
     margin-top:1em;
 }
 
-#mode-switcher:hover{
-    opacity: 1;
-}
-
-#mode-switcher{
-    float: right;
-}
-
 #markdown-viewer > p, 
 #markdown-viewer > * p, 
 #markdown-viewer > * li{
@@ -172,8 +164,15 @@ input{
     outline: none;
 }
 
+#hide-button {
+    float: left;
+    position: fixed;
+}
+
 #mode-switcher-button{
-    float: right;
+    position: fixed;
+    top: 1em;
+    right: 1em;
 }
 
 input:hover{
