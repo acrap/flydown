@@ -178,3 +178,9 @@ input{
 input:hover{
     opacity: 1;
 }
+
+#server-ref{
+    display: inline;
+    position: fixed;
+    bottom: 1em;
+}

@@ -23,7 +23,7 @@ import (
 	"strconv"
 
 	"github.com/NYTimes/gziphandler"
-	flydown "github.com/acrap/flydown/render"
+	flydown "github.com/acrap/flydown/internal/render"
 	"github.com/spf13/cobra"
 )
 
