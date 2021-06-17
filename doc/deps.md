@@ -16,4 +16,10 @@ go get .
 
 ## Go modules support
 
-This project support Go modules. 
+This project supports Go modules. 
+
+## Syntax highlighting
+
+This feature is powered by [Prismjs](https://prismjs.com/).
+
+Prismjs plugins, such as [Normalize Whitespace](https://prismjs.com/plugins/normalize-whitespace/) and [Copy to Clipboard Button](https://prismjs.com/plugins/copy-to-clipboard/) used for a better user expirience.
