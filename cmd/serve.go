@@ -27,8 +27,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const defPort = 8080
-const defBookName = "My book"
+const (
+	defPort     = 8080
+	defBookName = "My book"
+)
 
 var verbose *bool
 
@@ -93,5 +95,4 @@ func init() {
 	serveCmd.Flags().IntP("port", "p", defPort, "Pass the port")
 	serveCmd.Flags().StringP("bookName", "n", defBookName, "Pass the name of your book")
 	verbose = serveCmd.Flags().BoolP("verbose", "v", false, "Enable verbose")
-
 }
