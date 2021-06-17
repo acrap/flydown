@@ -38,3 +38,11 @@ blockquote span{
     opacity: 0.4;
 }
 
+#markdown-viewer > h1,
+#markdown-viewer > h2,
+#markdown-viewer > h3,
+#markdown-viewer > h4
+ {
+    padding-top: 10pt;
+    margin-bottom: 1pt;
+}

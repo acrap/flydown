@@ -91,7 +91,9 @@ It should have at least:
 ## summary.md example
 
 ```markdown
+
 * [Getting Started](readme.md)
 * [Dependencies](deps.md)
+
 ```
 

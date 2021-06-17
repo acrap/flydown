@@ -184,3 +184,14 @@ input:hover{
     position: fixed;
     bottom: 1em;
 }
+
+code:not(.class){
+    white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+    padding: 1em;
+}

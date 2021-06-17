@@ -67,3 +67,16 @@ button{
     background-color: #3e3d49;
     color: white;
 }
+
+#markdown-viewer > h1,
+#markdown-viewer > h2,
+#markdown-viewer > h3,
+#markdown-viewer > h4
+ {
+    padding-top: 10pt;
+    margin-bottom: 1pt;
+}
+
+input {
+    color: #f6f6f8;
+}
